@@ -46,55 +46,44 @@ export default function Pokemon() {
     };
   }, [hasNextPage, fetchNextPage]);
 
-  if (isLoading) {
-    return (
-      <div className="container mx-auto px-5 py-10">
-        <h1 className="mb-6 text-center text-4xl font-extrabold text-gray-800">
-          Pokémon List
-        </h1>
-        <div className="space-y-8">
-          {[...Array(5).keys()].map((_, index) => (
-            <div
-              key={index}
-              className="flex animate-pulse items-center space-x-4"
-            >
-              <div className="h-24 w-24 overflow-hidden rounded-lg bg-gray-300">
-                <div className="h-full w-full animate-pulse bg-gradient-to-r from-gray-300 to-gray-100"></div>
-              </div>
-              <div className="flex-1 space-y-4">
-                <div className="h-6 w-3/4 rounded bg-gray-200"></div>
-                <div className="h-4 w-1/2 rounded bg-gray-200"></div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="container mx-auto px-5 py-10">
       <h1 className="mb-6 text-center text-4xl font-extrabold text-gray-800">
         Pokémon List
       </h1>
+
       <table className="w-full overflow-hidden rounded-lg bg-white shadow-md">
         <thead className="bg-gray-800 text-white">
           <tr>
-            <th className="px-6 py-3 text-left">Name</th>
-            <th className="px-6 py-3 text-left">Image</th>
-            <th className="px-6 py-3 text-left">Types</th>
+            <th className="px-6 py-4 text-left">Name</th>
+            <th className="px-6 py-4 text-left">Image</th>
+            <th className="px-6 py-4 text-left">Types</th>
           </tr>
         </thead>
 
         <tbody>
-          {data?.pages.map((page) =>
-            page.results.map((pokemon: IPokemon) => (
-              <tr key={pokemon.name} className="hover:bg-gray-100">
-                <td className="border px-6 py-4">{pokemon.name}</td>
-                <PokemonDetails url={pokemon.url} />
-              </tr>
-            )),
-          )}
+          {isLoading
+            ? Array.from({ length: 10 }).map((_, index) => (
+                <tr key={index} className="hover:bg-gray-100">
+                  <td className="h-[108px] w-1/3 border px-6 py-4">
+                    <div className="h-5 w-24 animate-pulse rounded bg-gray-200"></div>
+                  </td>
+                  <td className="h-[108px] w-1/3 border px-6 py-4">
+                    <div className="h-10 w-10 animate-pulse rounded-full bg-gray-200"></div>
+                  </td>
+                  <td className="h-[108px] w-1/3 border px-6 py-4">
+                    <div className="h-5 w-24 animate-pulse rounded bg-gray-200"></div>
+                  </td>
+                </tr>
+              ))
+            : data?.pages.map((page) =>
+                page.results.map((pokemon: IPokemon) => (
+                  <tr key={pokemon.name} className="hover:bg-gray-100">
+                    <td className="w-1/3 border px-6 py-4">{pokemon.name}</td>
+                    <PokemonDetails url={pokemon.url} />
+                  </tr>
+                )),
+              )}
         </tbody>
       </table>
 
